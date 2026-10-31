@@ -22,7 +22,7 @@ jobs:
             curl -sSL --fail -o "$f" "$url" && n=$((n+1))
             [ $n -ge 6 ] && break
           done < musica/lista.txt
-          rm -f musica/upbeat.html
+          grep -oiE "[^\"\x27 ]+\.mp3" musica/upbeat.html | sort -u | head -20 > musica/mp3s.txt || true; head -c 3000 musica/upbeat.html > musica/head.txt
           ls -la musica
       - name: Guardar
         run: |
