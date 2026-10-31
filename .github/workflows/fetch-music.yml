@@ -12,17 +12,15 @@ jobs:
       - name: Listar y descargar temas
         run: |
           mkdir -p musica
-          curl -sSL "https://freepd.com/upbeat.php" -o musica/upbeat.html || true
-          grep -oiE 'href="[^"]+\.mp3"' musica/upbeat.html | sed -E 's/href="//I;s/"$//' | head -40 > musica/lista.txt || true
-          cat musica/lista.txt
-          n=0
-          while read -r u; do
-            case "$u" in http*) url="$u";; /*) url="https://freepd.com$u";; *) url="https://freepd.com/$u";; esac
-            f="musica/$(basename "$u" | tr ' %' '__')"
-            curl -sSL --fail -o "$f" "$url" && n=$((n+1))
-            [ $n -ge 6 ] && break
-          done < musica/lista.txt
-          grep -oiE "[^\"\x27 ]+\.mp3" musica/upbeat.html | sort -u | head -20 > musica/mp3s.txt || true; head -c 3000 musica/upbeat.html > musica/head.txt
+          rm -f musica/*.txt musica/*.html
+          curl -sSL "https://a.ocv.me/pub/stuff/music/freepd/" -o idx.html
+          grep -oiE 'href="[^"]+"' idx.html | sed -E 's/href="//I;s/"$//' > musica/indice.txt
+          head -60 musica/indice.txt
+          # bajar los temas pedidos en music.txt (uno por linea, nombre de archivo o carpeta/archivo)
+          tail -n +2 music.txt | while read -r f; do
+            [ -z "$f" ] && continue
+            curl -sSL --fail -o "musica/$(basename "$f" | tr ' %' '__')" "https://a.ocv.me/pub/stuff/music/freepd/$f" || echo "fallo $f"
+          done
           ls -la musica
       - name: Guardar
         run: |
