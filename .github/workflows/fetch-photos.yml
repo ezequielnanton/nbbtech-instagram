@@ -1,0 +1,27 @@
+name: Descargar fotos de Pexels
+on:
+  push:
+    paths: ['photos.txt']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Descargar fotos listadas en photos.txt
+        run: |
+          mkdir -p fotos
+          while read -r name url; do
+            [ -z "$name" ] && continue
+            curl -sSL --fail -o "fotos/$name" "$url"
+          done < photos.txt
+          ls -la fotos
+      - name: Guardar en el repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add fotos
+          git commit -m "Fotos descargadas de Pexels" || echo "sin cambios"
+          git push

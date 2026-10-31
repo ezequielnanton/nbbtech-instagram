@@ -1,0 +1,3 @@
+cabana.jpg https://images.pexels.com/photos/28965545/pexels-photo-28965545.jpeg?auto=compress&cs=tinysrgb&w=1600&fm=jpg
+depto.jpg https://images.pexels.com/photos/6527029/pexels-photo-6527029.jpeg?auto=compress&cs=tinysrgb&w=1600&fm=jpg
+casa.jpg https://images.pexels.com/photos/280222/pexels-photo-280222.jpeg?auto=compress&cs=tinysrgb&w=1600&fm=jpg
